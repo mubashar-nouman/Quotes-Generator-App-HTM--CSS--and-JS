@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Quotes Generator App</title>
+</head>
+<body>
+    
+    <div class="app-container">
+        <h1>Quote Generator App</h1>
+        <div class="dropdown">
+            <select id="category">
+                <option value="inspirational">Inspirational</option>
+                <option value="funny">Funny</option>
+                <option value="love">Love</option>
+                <!-- Add more categories as needed -->
+            </select>
+        </div>
+        <button id="generate-button">Generate Quote</button>
+        <div class="quote-container">
+            <p id="quote">Generated quote will appear here.</p>
+        </div>
+    </div>
+
+    <script src="./JS/script.js"></script>
+</body>
+</html>
