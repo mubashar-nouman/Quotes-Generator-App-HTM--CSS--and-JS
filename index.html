@@ -1,30 +1,267 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="./css/style.css">
-    <title>Quotes Generator App</title>
-</head>
-<body>
-    
-    <div class="app-container">
-        <h1>Quote Generator App</h1>
-        <div class="dropdown">
-            <select id="category">
-                <option value="inspirational">Inspirational</option>
-                <option value="funny">Funny</option>
-                <option value="love">Love</option>
-                <!-- Add more categories as needed -->
-            </select>
-        </div>
-        <button id="generate-button">Generate Quote</button>
-        <div class="quote-container">
-            <p id="quote">Generated quote will appear here.</p>
-        </div>
-    </div>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/sheryjs/dist/Shery.css" />
 
-    <script src="./JS/script.js"></script>
-</body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alkatra&family=Nothing+You+Could+Do&family=Sedgwick+Ave+Display&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      .companyNameFont {
+        font-family: "Sedgwick Ave Display", cursive;
+      }
+      .author {
+        font-family: "Nothing You Could Do", cursive;
+      }
+      .quote {
+        font-family: "Alkatra", cursive;
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-300 relative">
+    <header
+      class="flex items-center justify-between w-full py-5 px-10 absolute top-0 z-50"
+    >
+      <label class="h-full text-4xl companyNameFont">Quotes</label>
+      <nav></nav>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="50"
+        height="50"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="cursor-pointer"
+        id="menuOpen"
+      >
+        <line x1="3" y1="9" x2="21" y2="9" id="menuLine1"></line>
+        <line x1="3" y1="15" x2="15" y2="15" id="menuLine2"></line>
+      </svg>
+    </header>
+    <aside
+      class="absolute transition-all duration-500 w-full h-full z-50 left-0 -top-full"
+      id="catagoryDiv"
+    >
+      <div class="w-full h-full" id="catagoryEmptySpace"></div>
+      <div
+        class="bg-slate-300 absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 h-96 w-1/3 shadow-xl rounded-xl p-6 flex-col flex space-y-3"
+      >
+        <div class="text-lg font-semibold flex items-center justify-between">
+          <span>Select a Catagory</span>
+          <span
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              id="catagoryX"
+              class="cursor-pointer"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </span>
+        </div>
+        <div
+          class="flex flex-col space-y-1 overflow-y-auto bg-[rgb(209,220,232)] rounded-md"
+        >
+          <button
+            data-value="Inspirational"
+            class="catagory text-lg text-left px-4 py-2 border-b"
+          >
+            Inspirational
+          </button>
+          <button
+            data-value="Comedy"
+            class="catagory text-lg text-left px-4 py-2 border-b"
+          >
+            Comedy
+          </button>
+        </div>
+      </div>
+    </aside>
+    <main id="main" class="transition-all duration-300">
+      <section
+        class="h-screen py-20 flex flex-col items-center justify-center space-y-6"
+      >
+        <div class="flex w-full items-center justify-center space-x-6 z-10">
+          <div
+            class="bg-transparent border border-black w-96 text-center py-2 text-xl rounded-2xl relative cursor-pointer"
+            id="catagoryOpen"
+          >
+            <span id="selectedCatagory" class="select-none"
+              >--Select a Catagory--</span
+            >
+            <span class="absolute top-[55%] right-4 -translate-y-2/4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-chevron-down"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </div>
+          <button
+            id="generateButton"
+            class="bg-black text-white px-6 py-2 text-xl rounded-2xl"
+          >
+            Generate
+          </button>
+        </div>
+        <div class="flex w-2/4 h-96 bg-black rounded-2xl text-white relative">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 0 24 24"
+            shape-rendering="geometricPrecision"
+            text-rendering="geometricPrecision"
+            class="absolute quotation top-4 left-4 h-20 w-20"
+          >
+            <path
+              d="M15.8109,7.21997h-1.49c-1.09,0-1.94.85-1.94,1.94v1.49003c0,1.09.85,1.94,1.94,1.94h1.91c-.08,1.81-.5,2.08-1.71,2.79-.36.21-.47.67-.26,1.03.14.24.39.37.65.37.13,0,.26-.03.38-.1c1.79-1.06,2.46-1.75,2.46-4.83v-2.67001c0-1.09-.87-1.96002-1.94-1.96002Z"
+              transform="matrix(-1 0 0 1 30.1318 0.000015)"
+              fill="currentColor"
+            />
+            <path
+              d="M9.68,7.21997h-1.49c-1.09,0-1.94.85-1.94,1.94v1.49003c0,1.09.85,1.94,1.94,1.94h1.91c-.08,1.81-.5,2.08-1.71,2.79-.36.21-.47.67-.26,1.03.14.24.39.37.65.37.13,0,.26-.03.38-.1c1.79-1.06,2.46-1.75,2.46-4.83v-2.67001c-.01-1.09-.88-1.96002-1.94-1.96002Z"
+              transform="matrix(-1 0 0 1 17.87 0)"
+              fill="currentColor"
+            />
+          </svg>
+
+          <div
+            class="absolute text-sm top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 w-3/4 flex flex-col space-y-4"
+          >
+            <span id="quoteContainer">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
+              rerum at placeat tenetur libero corrupti recusandae deserunt nam
+              atque quo aperiam fugit provident dolorum error iure tempore,
+              laudantium sit labore nemo velit delectus aut? Quis laboriosam ut
+              quos consequatur iure dolor assumenda consectetur vitae blanditiis
+              nostrum quaerat incidunt sunt eaque recusandae possimus dolore
+              veniam fuga, necessitatibus obcaecati unde cumque quidem. Earum
+              ut, optio, dolor saepe doloribus, eos velit labore quas dolore
+              quae tempora rerum. Cum deserunt enim nostrum error, mollitia
+              perspiciatis qui repellat rem labore. Tempore incidunt
+              exercitationem minima praesentium?
+            </span>
+            <div class="text-right">
+              <span>~</span>
+              <span id="authorContainer" class="font-semibold"
+                >Dr. Mubashar Nouman</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+      function Popup(
+        id = "",
+        blured = "",
+        transitonspeed,
+        side = "left",
+        togglers = []
+      ) {
+        const container = document.getElementById(id);
+        const blurElement = document.getElementById(blured);
+        const percentage = +container.dataset.percentage || 0;
+        let state = false;
+        this.init = function () {
+          container.style[`${side}`] = `${-100 + percentage}%`;
+          togglers.map((e) => {
+            document.getElementById(e).addEventListener("click", () => {
+              this.toggle();
+            });
+          });
+        };
+        this.init();
+        this.toggle = function () {
+          state;
+          if (state) {
+            container.style[`${side}`] = `${-100 + percentage}%`;
+          } else {
+            container.style[`${side}`] = "0";
+          }
+          state = !state;
+          setTimeout(() => {
+            blurElement.classList.toggle("blur-md");
+          }, transitonspeed / 3);
+        };
+      }
+      const catagoryDiv = new Popup("catagoryDiv", "main", 500, "top", [
+        "catagoryOpen",
+        "catagoryX",
+        "catagoryEmptySpace",
+      ]);
+    </script>
+    <script>
+      let tl = gsap.timeline();
+      // tl.to(".quotation",{rotateY:360 , duration:1 , scale : 0.8 , repeat : 2 })
+      // tl.to("quotation",{top:0,scale:0.2})
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const catagories = document.getElementsByClassName("catagory");
+        let selectedCatagory =
+          document.getElementById("selectedCatagory").textContent;
+        Array.from(catagories).map((e) => {
+          e.addEventListener("click", () => {
+            catagoryDiv.toggle();
+            document.getElementById("selectedCatagory").textContent =
+              e.dataset.value;
+            selectedCatagory = e.dataset.value;
+          });
+        });
+
+        const generateButton = document.getElementById("generateButton");
+        const quoteContainer = document.getElementById("quoteContainer");
+        const authorContainer = document.getElementById("authorContainer");
+
+        generateButton.addEventListener("click", async function () {
+          let selected = selectedCatagory.toLowerCase();
+          const result = await getQuoteAndAuthor(selected);
+          console.log(result);
+          quoteContainer.textContent = result[0].quote;
+          authorContainer.textContent = result[0].author;
+        });
+      });
+
+      const getQuoteAndAuthor = async (category) => {
+        const apiKey = "xx6ge8ZFPxj3jAX3cbzfkg==GEO4FYqZAZKMKL7D";
+        const api_url = `https://api.api-ninjas.com/v1/quotes?category=${category}`;
+        const response = await fetch(api_url, {
+          headers: { "X-Api-Key": apiKey },
+        });
+        const data = await response.json();
+        return data;
+      };
+    </script>
+  </body>
 </html>
