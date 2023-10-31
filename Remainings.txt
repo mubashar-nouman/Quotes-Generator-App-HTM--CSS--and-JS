@@ -1,0 +1,5 @@
+Animation
+PWA
+Responsive
+API ERROR Handling
+local storage
